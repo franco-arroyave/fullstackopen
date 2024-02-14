@@ -6,10 +6,10 @@ const Button = ({handlerClk,text}) => {
 
 const StatisticLine = ({text,value}) => {
   return (
-    <>
-    {text}: {value}
-    <br/>
-    </>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   )
 }
 
@@ -28,14 +28,16 @@ const Statistics = ({statistics}) => {
   return (
     <div>
       <h1>Statistics</h1>
-      <div>
-        <StatisticLine text={"Good"} value={statistics.good}/>
-        <StatisticLine text={"Neutral"} value={statistics.neutral}/>
-        <StatisticLine text={"Bad"} value={statistics.bad}/>
-        <StatisticLine text={"All"} value={total}/>
-        <StatisticLine text={"Average"} value={avrg}/>
-        <StatisticLine text={"Positive"} value={positive+"%"}/>
-      </div>
+      <table>
+        <tbody>
+          <StatisticLine text={"Good"} value={statistics.good}/>
+          <StatisticLine text={"Neutral"} value={statistics.neutral}/>
+          <StatisticLine text={"Bad"} value={statistics.bad}/>
+          <StatisticLine text={"All"} value={total}/>
+          <StatisticLine text={"Average"} value={avrg}/>
+          <StatisticLine text={"Positive"} value={positive+"%"}/>
+        </tbody>
+      </table>
     </div>
   )
 }
