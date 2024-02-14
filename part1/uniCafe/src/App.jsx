@@ -6,8 +6,16 @@ const Button = ({handlerClk,text}) => {
 
 const Statistics = ({statistics}) => {
   const total = statistics.bad+statistics.good+statistics.neutral
-  const avrg = total == 0 ? 0 : (statistics.good-statistics.bad)/total
-  const positive = total == 0 ? 0 : (statistics.good/total)*100
+  if (total == 0) {
+    return(
+      <div>
+        <h1>Statistics</h1>
+        <p>No feedback given</p>
+      </div>
+    )
+  }
+  const avrg = (statistics.good-statistics.bad)/total
+  const positive = (statistics.good/total)*100
   return (
     <div>
       <h1>Statistics</h1>
