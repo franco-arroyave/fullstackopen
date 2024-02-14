@@ -5,12 +5,20 @@ const Button = ({handlerClk,text}) => {
 }
 
 const Statistics = ({statistics}) => {
+  const total = statistics.bad+statistics.good+statistics.neutral
+  const avrg = total == 0 ? 0 : (statistics.good-statistics.bad)/total
+  const positive = total == 0 ? 0 : (statistics.good/total)*100
   return (
     <div>
       <h1>Statistics</h1>
-      <p>Good: {statistics.good}</p>
-      <p>Neutral: {statistics.neutral}</p>
-      <p>Bad: {statistics.bad}</p>
+      <p>
+      Good: {statistics.good}<br/>
+      Neutral: {statistics.neutral}<br/>
+      Bad: {statistics.bad}<br/>
+      All: {total}<br/>
+      Average: {avrg}<br/>
+      Positive: {positive}%
+      </p>
     </div>
   )
 }
