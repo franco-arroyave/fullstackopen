@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import  Filter  from './components/Filter.jsx'
 import Persons from './components/Persons.jsx'
 import PersonForm from './components/PersonForm.jsx'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -10,13 +10,11 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
 
-  const handlerGetPeople = (promise) => {
+  useEffect(() => {
     console.log('getPeople')
-    axios
-    .get('http://localhost:3001/persons')
-    .then(Response => setPersons(Response.data))
-  }
-  useEffect(handlerGetPeople, [])
+    personService.getAll()
+    .then(Response => setPersons(Response))
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -28,14 +26,25 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    axios.post('http://localhost:3001/persons', nameObject)
-    .then(response => {
-      setPersons(persons.concat(response.data))
+    personService.create(nameObject)
+    .then(returnedPerson => {
+      setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNumber('')
-      console.log(response)
+      console.log(returnedPerson)
     })
-  
+  }
+
+  const handlerDelete = (id) => {
+    console.log("delete", id)
+    const person = persons.find(person => person.id === id)
+    if(window.confirm(`Delete ${person.name}?`)) {
+      personService
+        .deletePerson(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
   }
 
   const personsToShow = filterName === ''
@@ -49,7 +58,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} handlerDelete={handlerDelete} />
       <br />
       <div>
         <h3>debug</h3>
